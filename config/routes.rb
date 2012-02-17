@@ -1,9 +1,13 @@
 GameServer::Application.routes.draw do
-  get "users/list"
-
-  get "users/show"
+  
+  get "sessions/new"
+  get "sessions/create"
+  get "sessions/destroy"
 
   get "users/new"
+  get "users/create"
+  get "users/list"
+  get "users/show"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
