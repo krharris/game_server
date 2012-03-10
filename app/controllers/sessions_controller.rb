@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
   def new
   end
 
+  # Create a user session so the user's client only has to sign in once.
   def create
     user = User.authenticate(params[:email], params[:password])
 
@@ -13,11 +14,17 @@ class SessionsController < ApplicationController
       respond_with(flash)
     else
       sign_in user
-      respond_with(user)
+      #respond_with(user)
+      flash.now[:success] = "User signed in."
+      respond_with(flash)
     end
   end
 
+  # Destroying the session is like signing out.
   def destroy
     sign_out
+    
+    flash.now[:success] = "User signed out."
+    respond_with(flash)
   end
 end
