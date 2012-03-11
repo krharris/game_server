@@ -15,9 +15,8 @@ class UsersController < ApplicationController
     
     if @user.valid?
       sign_in @user
-      #respond_with(@user)
-      flash.now[:success] = "User was created and signed in."
-      respond_with(flash)
+      response = { :name => @user.name, :email => @user.email, :id => @user.id }
+      respond_with(response)
     else
       #respond_with(@user.errors)
       flash.now[:error] = @user.errors
