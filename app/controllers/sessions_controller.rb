@@ -13,10 +13,9 @@ class SessionsController < ApplicationController
       flash.now[:error] = "Invalid email/password combination."
       respond_with(flash)
     else
-      sign_in user
-      #respond_with(user)
-      flash.now[:success] = "User signed in."
-      respond_with(flash)
+      sign_in user 
+      response = { :name => user.name, :email => user.email, :id => user.id }
+      respond_with(response)
     end
   end
 
