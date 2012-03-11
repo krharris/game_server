@@ -1,0 +1,1000 @@
+
+----------------------------------------------------
+
+rails c
+heroku run console
+
+User.delete_all ; Game.delete_all ; Move.delete_all ; Chat.delete_all
+y User.all ; y Game.all ; y Move.all ; y Chat.all
+
+----------------------------------------------------
+
+git push heroku master
+heroku ps
+heroku logs
+heroku open
+heroku run console
+heroku run rake db:migrate
+heroku run rake bootstrap:all
+heroku open
+
+----------------------------------------------------
+
+http://floating-sunset-9026.herokuapp.com/sessions/create.json?email=test1@test.com&password=password1
+http://floating-sunset-9026.herokuapp.com/users/show.json?id=3
+
+/users/create.json?name=Kevin&email=tokevinharris@gmail.com&password=testtest&password_confirmation=testtest
+
+http://0.0.0.0:3000/users/create.json?name=Kevin&email=tokevinharris@gmail.com&password=testtest&password_confirmation=testtest
+http://0.0.0.0:3000/sessions/create.json?email=tokevinharris@gmail.com&password=testtest
+http://0.0.0.0:3000/users/show.json?id=24
+
+----------------------------------------------------
+
+rails generate migration add_email_uniqueness_index
+rails generate migration add_password_to_users encrypted_password:string
+rails generate migration add_salt_to_users salt:string
+
+rails generate model User name:string email:string
+rails generate model Game user_id_1:integer user_id_2:integer num_moves:integer num_chats:integer
+rails generate model Chat user_id:integer game_id:integer message:text
+rails generate model Move user_id:integer game_id:integer data:text
+
+rails generate controller Sessions new
+
+----------------------------------------------------
+
+belongs_to :user
+has_many :games
+
+User.create(:name => "Mr. Test1", :email => "test1@test.com")
+User.create(:name => "Mr. Test2", :email => "test2@test.com")
+Game.create(:user_id_1 => 6, :user_id_2 => 7, :num_moves => 0, :num_chats => 0)
+
+
+belongs_to :user_1, :class_name => 'User', :foreign_key => 'user_id_1'
+belongs_to :user_2, :class_name => 'User', :foreign_key => 'user_id_2'
+
+
+
+
+
+
+rails generate model User name:string email:string
+rake db:migrate
+
+mate Gemfile
+
+group :development do
+	gem 'annotate-models', '1.0.4'
+end
+
+bundle install
+annotate
+
+mate app/models/user.rb
+# Add this to User class
+attr_accessible :name, :email
+
+rails console --sandbox
+
+tail -f log/development.log
+
+User.new
+user = User.new(:name => "Kevin Harris", :email => "tokevinharris@gmail.com")
+user.save
+
+user = User.create(:name => "Debbie Harris", :email => "todebbieharris@gmail.com")
+User.all
+User.find(1)
+User.find_by_id(3)
+User.find_by_email("tokevinharris@gmail.com")
+User.first
+User.last
+
+user = User.find(2)
+user.email = "todebbieharris@gmail.com"
+user.save
+
+or...
+user.reload    to fetch old data
+
+user.update_attributes( :name => "", :email => "")
+
+user.errors.full_messages
+
+user.valid?
+
+rails generate migration add_email_uniqueness_index
+
+
+
+
+
+
+ -- Install Postgres for a Rails App --
+
+brew install postgres
+brew info postgres
+
+initdb /usr/local/var/postgres
+
+# Install lunchy to assist with starting and stopping postgresql.
+sudo gem install lunchy
+mkdir -p ~/Library/LaunchAgents
+cp /usr/local/Cellar/postgresql/9.1.2/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+lunchy start postgres
+lunchy stop postgres
+lunchy start postgres
+
+# Create two users for testing.
+createuser myuser    # Super user = n
+createuser user1     # No to all questions
+
+# Create two databases for our ruby app.
+createdb -Ouser1 -Eutf8 emptyapp_development
+createdb -Ouser1 -Eutf8 emptyapp_test
+
+# Test new database by connecting to it.
+psql -U user1 emptyapp_development
+
+# Install the gem required by ruby to talk to a postgreslq database.
+sudo env ARCHFLAGS="-arch x86_64" gem install pg
+
+ -- Create a Rails App to test out Postgresql install --
+
+rails new emptyapp --database=postgresql
+
+cd emptyapp/
+
+rails g scaffold Post title:string author:string body:text
+
+# open this file and modify it to use our new databases.
+mate config/database.yml &
+
+# Modify the entries in the database.yml like so:
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: emptyapp_development
+  pool: 5
+  username: user1
+  password:
+
+// Back at the command line migrate the database.
+rake db:migrate
+
+
+ -- Upload Ruby app to Heroku for Deployment --
+
+gem install heroku
+heroku login
+heroku create --stack cedar
+git push heroku master
+
+heroku ps
+heroku logs
+
+heroku run console
+
+heroku run rake db:migrate
+
+
+
+heroku config:add LOG_LEVEL=DEBUG
+
+heroku run rake db:version
+________________________________________________________________________________
+
+
+
+
+
+
+http://www.rubyinside.com/how-to-install-and-use-postgres-on-os-x-for-ruby-and-rails-development-4999.html
+
+
+brew info postgresql
+initdb /usr/local/var/postgres
+
+postgres -D /usr/local/var/postgres
+sudo gem install lunchy
+initdb /usr/local/var/postgres
+brew info postgresql
+mkdir -p ~/Library/LaunchAgents
+cp /usr/local/Cellar/postgresql/9.1.2/org.postgresql.postgres.plist ~/Library/LaunchAgents/
+lunchy start postgres
+
+createuser myuser
+createuser user1
+createdb -Ouser1 -Eutf8 emptyapp_development
+createdb -Ouser1 -Eutf8 emptyapp_test
+
+psql -U user1 emptyapp_development
+
+sudo env ARCHFLAGS="-arch x86_64" gem install pg
+
+rails new emptyapp --database=postgresql
+
+cd emptyapp/
+
+rails g scaffold Post title:string author:string body:text
+
+# open this file and modify it to use our new databases.
+mate config/database.yml &
+
+# Modify the entries in the database.yml like so:
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: emptyapp_development
+  pool: 5
+  username: user1
+  password:
+
+// Back at the command line migrate the database.
+rake db:migrate
+
+
+
+
+
+
+
+
+
+
+  503  which ruby
+  504  ruby -v
+  505  rvm
+  506  rvm install 1.9.2
+  508  rvm use 1.9.2
+  509  ruby -v
+
+  512  cd www/emptyapp/
+
+  514  rm -rf ~/.gems ; sudo rm -rf /Library/Ruby/Gems/*
+  515  gem install bundle
+  516  bundle install
+
+  524  gem install lunchy
+  533  sudo env ARCHFLAGS="-arch x86_64" gem install pg
+
+  535  lunchy start postgres
+  536  psql -U user1 emptyapp_development
+  537  rake db:migrate
+  538  rails server
+
+________________________________________________________________________________
+| emptyapp @ Kevins-MacBook-Pro (kharris) 
+| => 
+
+
+
+
+
+
+
+lunchy start postgres
+
+rm -rf ~/.gems ; sudo rm -rf /Library/Ruby/Gems/*
+
+
+
+501  cd www/emptyapp/
+505  git init
+506  git add .
+507  git commit -m "init"
+508  heroku create --stack cedar
+509  git push heroku master
+510  heroku ps
+511  heroku logs
+512  heroku open
+513  heroku run console
+514  heroku run rake db:migrate
+515  heroku open
+
+
+
+
+
+
+588  ls
+589  cd ..
+590  ls
+591  rm -rd emptyapp/
+592  ls
+593  rails new emptyapp --database=postgresql
+594  ls
+595  cd emptyapp/
+596  rails g scaffold Post title:string author:string body:text
+597  rake db:migrate
+
+600  mate config/database.yml &
+
+606  rake db:migrate
+607  rails server
+
+
+
+-----------------------
+
+
+/usr/local/Cellar/postgresql/9.1.2/bin/psql -U user1 emptyapp_developmentrails new myapp --database=postgresql
+
+
+
+
+
+-------------------------
+
+
+
+development:
+    adapter: postgresql
+    encoding: unicode
+    database: blog_development
+    pool: 5
+    username: blog
+    password:
+
+
+
+
+rm -rf ~/.gems ; 
+sudo rm -rf /Library/Ruby/Gems/*
+
+brew install postgresql
+
+sudo gem install bundler ; bundle install
+
+
+
+
+246  heroku login
+
+250  ruby
+251  which ruby
+254  ruby -v
+255  brew install ruby
+256  /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
+258  brew install ruby
+259  ruby -v
+260  cd
+261  ls -a
+262  mate .bashrc &
+263  mate .bash_profile &
+264  ruby -v
+265  env
+266  which ruby
+267  cd /usr/bin/
+287  gem install heroku
+288  rails
+289  sudo gem install rails
+
+291  bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+292  mate .bash_profile &
+293  ruby -v
+294  ruby -v
+295  bundle
+296  gem install bundler
+297  sudo gem install bundler
+298  bundle
+299  rails
+300  gem version
+301  gem -v
+302  gem update rails
+303  rails
+304  sudo gem install rails
+305  rails
+306  type rvm | head -1
+307  rvm install 1.9.2
+308  rvm doc generate
+309  rvm docs generate
+310  rvm use 1.9.2
+311  ruby -v
+312  gem -v
+313  gem update --system
+314  sqllite3 -version
+315  sqlite3 -version
+316  pwd
+317  mkdir ~/src
+318  cd ~/src/
+319  ls
+320  curl http://www.sqlite.org/sqlite-3.7.5.tar.gz | tar xvz
+321  gem install sqlite3
+322  gem install rails
+323  rails -v
+324  pwd
+325  ls
+326  which rails
+327  cd
+328  pwd
+329  ls -a
+330  mkdir www
+331  cd www/
+332  ls
+333  rails new myapp
+334  ls
+335  cd myapp/
+336  ls
+337  rails server
+338  ls
+339  cd ..
+340  ls
+341  cd ..
+342  ls
+343  rm -rf www/
+344  ls
+345  gem install heroku
+346  cd
+347  ls
+348  mkdir www
+349  cd www/
+350  ls
+351  ls
+352  rails new myapp
+353  bundle show
+354  ls
+355  cd myapp/
+356  bundle show
+357  ls
+358  mate Gemfile &
+359  bundle install
+360  git init
+361  git add .
+362  git commit -m "init"
+363  heroku create --stack cedar
+364  git push heroku master
+365  heroku ps
+366  heroku logs
+367  heroku addons:add logging
+368  heroku logs
+369  heroku open
+370  heroku run console
+371  heroku run rake db:migrate
+372  mate Gemfile&
+373  ls
+374  web: bundle exec rails server thin -p $PORT
+375  mate Procfile&
+376  gem install foreman
+377  foreman start
+378  bundle install
+379  foreman start
+380  heroku open
+381  foreman start
+382  git add Gemfile Procfile 
+383  git commit -m "Use thin via Procfile"
+384  git push heroku
+385  bundle install
+386  ls
+387  git status
+388  git add Gemfile.lock 
+389  git commit -m "Use thin via Procfile"
+390  git push heroku
+391  heroku ps
+392  heroku logs
+393  heroku ps
+394  pwd
+395  ls
+396  rails generate controller home index
+397  heroku open
+398  rm public/index.html 
+399  mate config/routes.rb &
+400  heroku open
+401  heroku open
+402  rails server
+403  rails server
+404  rails server
+405  rails server
+406  rake db:migrate
+407  gem install activerecord-sqlite3-adapter
+408  rails server
+409  rake db:migrate
+410  mate Gemfile&
+411  bundle install
+412  rails server
+413  rake db:migrate
+414  rails generate controller home index
+415  rake db:migrate
+416  rails server
+417  rm public/index.html 
+418  mate config/routes.rb &
+419  rails server
+420  git status
+421  git status
+422  git push heroku
+423  mate Gemfile&
+424  git status
+425  git commit Gemfile
+426  pwd
+427  ls
+428  cd www/myapp/
+429  ls
+430  ls
+431  git push heroku
+432  bundle install
+433  git status
+434  git commit Gemfile.lock 
+435  git push heroku
+436  rails server
+437  bundle install
+438  rails server
+439  rails server
+440  bundle install
+441  bundle install
+442  rails server
+443  rails server
+444  bundle install
+445  bundle install
+446  bundle install
+447  rails server
+448  pwd
+449  ls
+450  rake db:migrate
+451  bundle install
+452  rails server
+453  rake db:migrate
+454  gem show
+455  gem
+456  gem install show
+457  gem
+458  gem install rake
+459  sudo gem install rake
+460  rake db:migrate
+461  bundle install
+462  rails server
+463  rake db:migrate
+464  gem update --system
+465  sudo gem update --system
+466  rake db:migrate
+467  rails server
+468  rake db:migrate
+469  bundle install
+470  which ruby
+471  cd /Library/Ruby/Gems/
+472  ls
+473  cd 1.8/
+474  ls
+475  cd specifications/
+476  ls
+477  mate actionmailer-3.2.0.gemspec &
+478  mate actionmailer-3.2.0.gemspec &
+479  ls
+480  mate actionmailer-3.2.0.gemspec 
+481  mate activemodel-3.2.0.gemspec 
+482  rails server
+483  rails server
+484  ls
+485  mate tilt-1.3.3.gemspec 
+486  mate tilt-1.3.3.gemspec perl -p -i -e 's/ 00:00:00.000000000Z//' ~/.rvm/gems/*/specifications/*.gemspec
+487  find . -name "*.gemspec" -exec grep "00:00:00" '{}' \; -print
+488  ls
+489  pwd
+490  find /Library/Ruby/Gems/1.8/specifications -name "*.gemspec" -exec grep "00:00:00" '{}' \; -print
+491  mate actionmailer-3.2.0.gemspec 
+492  cd ../
+493  ls
+494  mate specifications/ &
+495  cd ~/www/myapp/
+496  ls
+497  bundle install
+498  pwd
+499  sudo gem update rails
+500  history
+
+
+
+
+How to show hidden files in Mac OS X Lion
+I’m continuing to get my new Macbook Air set up, and I’ve been getting adjusted to the new Finder. This helps if you’re a power user:
+
+    Open the terminal (found in /Applications/Utilities/)
+    Type the following (without quotation marks) to show hidden files: “defaults write com.apple.finder AppleShowAllFiles -bool true”
+    Hit enter
+    Type the following (without quotation marks) to restart the Finder: “killall Finder”
+    Hit enter
+
+
+
+69  ssh-keygen -t rsa -C "tokevinharris@gmail.com"
+78  cat .ssh/id_rsa.pub | pbcopy
+79  ssh -T git@github.com
+
+ssh -T git@github.com
+
+S-----7rsa!
+
+
+
+
+http://help.github.com/git-cheat-sheets/
+
+----------------------------------------------------
+
+ -- Use Araxis Merge With SourceTree --
+
+
+Copy all programs in Utilities off the mount and into /usr/local/bin
+
+http://www.araxis.com/merge_mac/scm_integration.html
+
+----------------------------------------------------
+
+ -- Setup a local server running out of gwf_service --
+
+In UserClientConfigs.plist set key 'ServerAddress' to 192.168.1.200:3000
+
+cd /newtoy/BattleSnakes/gwf_service
+brew install lzo
+bundle install
+rake db:migrate
+rake bootstrap
+passenger start
+
+script/console
+
+m = MtxProduct.new
+m.some_column = ""
+m.save
+
+m = MtxProduct.find(1)
+exit
+
+
+
+----------------------------------------------------
+
+ -- Test Facebook Account --
+  
+test.tokevinharris@gmail.com
+S-rb--7tfb!
+
+Name: ZKevin ZHarris
+
+----------------------------------------------------
+
+ -- Test Gmail Account --
+  
+test.tokevinharris@gmail.com
+S-rb--7tgm!
+
+--------------------------------------------------------------------------------
+
+ -- Bash dump for Rolling Back or operating in 'detached HEAD' state --
+
+This example rolls the Mobile City game code back to when it was We Rule by doing
+a checkout on a revision ID that is very early in the branch's revision history.
+
+cd /Developer/city_client/
+git checkout 8d9b5d4054f5f9e2110e6d06f8f9d9e6a52d0eaf
+
+--------------------------------------------------------------------------------
+
+ -- Bash dump of Creating a new Branch in Git --
+
+cd /Developer/games_with_friends/
+git status
+git stash 
+git status
+git checkout -b in_app_purchase
+git stash pop
+git add .
+git stash pop
+
+--------------------------------------------------------------------------------
+
+ -- Bash find --
+
+find . -name "*.xib" -exec grep "cancelButtonPressed" '{}' \; -print
+
+--------------------------------------------------------------------------------
+
+ -- Fidelity --
+
+kharris72
+el---R-y2
+
+--------------------------------------------------------------------------------
+
+ -- TextMate License Key --
+
+Owner name: Kevin Harris
+
+License key (four lines):
+
+ENWUW76CCQFLZJHHOHHKJ2GCVKFHH32ZUFN7OKRCD3IOUZI3AFUS-
+GYCRK5AKPQV7OOFGFFPDG5CHXIMOFQUJUZYN3OGD3PFCSMZWRPNJ-
+VXQATLD474VI3N6AG3JVG4DCNENTEDAMERYBSFCO267UGFQGDTZ7-
+UYZ7FAXTPL52R4RT2X3IPWRDUZGWT4WFA5JZQK4573T44APGS
+
+--------------------------------------------------------------------------------
+
+ -- SmartGit License Key --
+
+Name=Michael Chow
+Address=610 Elm Street Suite 910, 75069 McKinney Texas, USA
+Email=wendi@newtoyinc.com
+FreeUpdatesUntil=2011-08-17
+LicenseCount=5
+Key=8kp-VISyL-0uZxq->HsDZ-LAQAw-dYoLW-QOjDH-5vrs3->Hqb<
+
+--------------------------------------------------------------------------------
+
+ -- Pathfinder License Key --
+
+Mindy Sloan
+CPF5-HYW1-TZXU-D8BT-1A9H-WSYS-8VVS
+
+--------------------------------------------------------------------------------
+
+ -- Github Account Login --
+
+User Name: tokevinharris@gmail.com
+Password:  S-----7gh!
+
+kevinharris997
+
+--------------------------------------------------------------------------------
+
+ -- Initial Source Code Setup -- 
+
+NOTE: Github URls came form newtoy Github account.
+
+24420kharris:~ kharris$ git
+-bash: git: command not found
+
+24420kharris:~ kharris$ brew
+-bash: brew: command not found
+
+24420kharris:~ kharris$ ruby -e "$(curl -fsSL https://gist.github.com/raw/323731/install_homebrew.rb)"
+This script requires the user kharris to be in the staff group. If this
+sucks for you then you can install Homebrew in your home directory or however
+you please; please refer to the website. If you still want to use this script
+the following command should work:
+
+    dscl /Local/Default -append /Groups/staff GroupMembership $USER
+
+24420kharris:~ kharris$ dscl /Local/Default -append /Groups/staff GroupMembership $USER
+<main> attribute status: eDSPermissionError
+<dscl_cmd> DS Error: -14120 (eDSPermissionError)
+
+24420kharris:~ kharris$ sudo !!
+sudo dscl /Local/Default -append /Groups/staff GroupMembership $USER
+
+WARNING: Improper use of the sudo command could lead to data loss
+or the deletion of important system files. Please double-check your
+typing when using sudo. Type "man sudo" for more information.
+
+To proceed, enter your password, or type Ctrl-C to abort.
+
+Password:
+
+24420kharris:~ kharris$ ruby -e "$(curl -fsSL https://gist.github.com/raw/323731/install_homebrew.rb)"
+==> This script will install:
+/usr/local/bin/brew
+/usr/local/Library/Formula/...
+/usr/local/Library/Homebrew/...
+==> The following directories will be made group writable:
+/usr/local/.
+/usr/local/bin
+==> The following directories will have their group set to staff:
+/usr/local/.
+/usr/local/bin
+
+Press enter to continue
+==> /usr/bin/sudo /bin/chmod g+w /usr/local/. /usr/local/bin
+==> /usr/bin/sudo /usr/bin/chgrp staff /usr/local/. /usr/local/bin
+==> Downloading and Installing Homebrew...
+==> Installation successful!
+24420kharris:~ kharris$ brew install git
+==> Downloading http://kernel.org/pub/software/scm/git/git-1.7.4.3.tar.bz2
+######################################################################## 100.0%
+==> make prefix=/usr/local/Cellar/git/1.7.4.3 install
+==> Downloading http://kernel.org/pub/software/scm/git/git-manpages-1.7.4.3.tar.
+######################################################################## 100.0%
+==> Downloading http://kernel.org/pub/software/scm/git/git-htmldocs-1.7.4.3.tar.
+######################################################################## 100.0%
+==> Caveats
+Bash completion and emacs support have been installed.
+
+The rest of the "contrib" folder has been copied to:
+  /usr/local/Cellar/git/1.7.4.3/share/contrib
+==> Summary
+/usr/local/Cellar/git/1.7.4.3: 1053 files, 19M, built in 36 seconds
+24420kharris:~ kharris$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/kharris/.ssh/id_rsa): 
+Created directory '/Users/kharris/.ssh'.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /Users/kharris/.ssh/id_rsa.
+Your public key has been saved in /Users/kharris/.ssh/id_rsa.pub.
+The key fingerprint is:
+9f:f7:ec:cf:5a:8d:71:70:6f:13:78:56:4a:48:22:ba kharris@24420kharris.local
+The key's randomart image is:
++--[ RSA 2048]----+
+|        . ..... .|
+|       . . ......|
+|      .      .o+.|
+|       .      ooo|
+|      E S     ..+|
+|         . .   =o|
+|          o . . o|
+|           . o o |
+|             .=oo|
++-----------------+
+
+24420kharris:~ kharris$ cd ~
+
+24420kharris:~ kharris$ cat .ssh/id_rsa.pub | pbcopy
+ 
+24420kharris:~ kharris$ cd /
+
+24420kharris:/ kharris$ cd Developer/
+
+24420kharris:Developer kharris$ git clone git@github.com:newtoy/games_with_friends.git
+Cloning into games_with_friends...
+The authenticity of host 'github.com (207.97.227.239)' can't be established.
+RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,207.97.227.239' (RSA) to the list of known hosts.
+remote: Counting objects: 23071, done.
+remote: Compressing objects: 100% (7079/7079), done.
+remote: Total 23071 (delta 16104), reused 22524 (delta 15611)
+Receiving objects: 100% (23071/23071), 481.37 MiB | 1.05 MiB/s, done.
+Resolving deltas: 100% (16104/16104), done.
+
+24420kharris:Developer kharris$ git clone git@github.com:newtoy/toybox.git Cloning into toybox...
+remote: Counting objects: 38068, done.
+remote: Compressing objects: 100% (21587/21587), done.
+remote: Total 38068 (delta 16164), reused 37699 (delta 15950)
+Receiving objects: 100% (38068/38068), 82.96 MiB | 1.25 MiB/s, done.
+Resolving deltas: 100% (16164/16164), done.
+
+24420kharris:Developer kharris$ git clone git@github.com:newtoy/gwf_service.git
+Cloning into gwf_service...
+remote: Counting objects: 30794, done.
+remote: Compressing objects: 100% (8292/8292), done.
+remote: Total 30794 (delta 22005), reused 30645 (delta 21886)
+Receiving objects: 100% (30794/30794), 7.42 MiB | 1.12 MiB/s, done.
+Resolving deltas: 100% (22005/22005), done.
+
+24420kharris:~ kharris$ cd /Developer/
+
+24420kharris:Developer kharris$ cd games_with_friends/
+
+24420kharris:games_with_friends kharris$ git status
+# On branch master
+nothing to commit (working directory clean)
+
+24420kharris:games_with_friends kharris$ git checkout development
+Checking out files: 100% (1295/1295), done.
+Branch development set up to track remote branch development from origin.
+Switched to a new branch 'development'
+
+ -- History Dump of Source Code Setup -- 
+    
+   git
+   brew
+   ruby -e "$(curl -fsSL https://gist.github.com/raw/323731/install_homebrew.rb)"
+   dscl /Local/Default -append /Groups/staff GroupMembership $USER
+   sudo dscl /Local/Default -append /Groups/staff GroupMembership $USER
+   ruby -e "$(curl -fsSL https://gist.github.com/raw/323731/install_homebrew.rb)"
+   brew install git
+   ssh-keygen -t rsa
+   git
+   cd ~
+   cat .ssh/id_rsa.pub | pbcopy
+   cd /
+   cd Developer/
+   git clone git@github.com:newtoy/games_with_friends.git
+   git clone git@github.com:newtoy/toybox.git
+   git clone git@github.com:newtoy/gwf_service.git
+   cd /Developer/
+   cd games_with_friends/
+   git status
+   git checkout development
+
+
+
+   http://www.smartapps.co/2011/01/version-control-system-with-xcode-4-and-git-tutorial/
+
+
+--------------------------------------------------------------------------------
+
+ -- Partial History Dump of Ruby/MySQL Server Setup --
+
+
+  270  gem update --system
+  271  sudo  gem update --system
+  272  sudo gem install bundler
+  273  export ARCHFLAGS="-arch i386 -arch x86_64"
+  274      gem install mysql -- --with-mysql-dir=/usr/local     --with-mysql-config=/usr/local/bin/mysql_config
+  275  sudo     gem install mysql -- --with-mysql-dir=/usr/local     --with-mysql-config=/usr/local/bin/mysql_config
+  276  bundle
+  277  cd /Developer/gwf_service/
+  278  ls
+  279  bundle
+  280  rake bootstrap
+  281  ps aux | grep
+  282  ps aux | grep mysql
+  283  mysqld & 
+  284  cd /usr/
+  285  ls
+  286  ls -l
+  287  chown 
+  288  chown root:wheel
+  289  chown root:wheel local
+  290  sudo chown root:wheel local
+  291  ls -l
+  292  mysqld
+  293  chown kharris:wheel local
+  294  sudo chown kharris:wheel local
+  295  ls -l
+  296  mysqld
+  297  brew unistall mysql
+  298  brew uninstall mysql
+  299  sudo brew uninstall mysql
+  300  brew install mysql
+  301  mkdir -p ~/Library/LaunchAgents
+  302  cp /usr/local/Cellar/mysql/5.5.14/com.mysql.mysqld.plist ~/Library/LaunchAgents/
+  303  launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+  304  mysqld
+  305  mysqld
+  306  cd /usr/local/var/mysql/
+  307  ls -l
+  308  mkdir asd
+  309  cd ..
+  310  ls -la
+  311  cd ..
+  312  ls -la
+  313  sudo chown kharris:staff var
+  314  ls var
+  315  ls -l var
+  316  pwd
+  317  cd ..
+  318  sudo chown -R kharris:wheel local
+  319  ls -la
+  320  mysqld &
+  321  ps aux
+  322  ps aux | grep mysql
+  323  kill -9 15199
+  324  ps aux
+  325  ps aux | grep mysql
+  326  ps aux | grep redis
+  327  ps aux | grep memcache
+  328  cd /Developer/
+  329  cd gwf_service/
+  330  rake
+  331  rake bootstrap
+  332  rake bootstrap --trace
+  333  ps aux | grep mysql
+  334  mysqladmin
+  335  mysqladmin shutdown
+  336  rake bootstrap
+  337  ps aux | grep mysql
+  338  brew info mysql
+  339      launchctl unload -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+  340      cp /usr/local/Cellar/mysql/5.5.14/com.mysql.mysqld.plist ~/Library/LaunchAgents/
+  341      launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist
+  342  ps aux | grep mysql
+  343  mysql
+  344  rake bootstrap
+  345  ARCHFLAGS="-arch i386 -arch x86_64" gem install mysql -- --with-mysql-dir=/usr/local --with-mysql-config=/usr/local/bin/mysql_config
+  346  sudo ARCHFLAGS="-arch i386 -arch x86_64" gem install mysql -- --with-mysql-dir=/usr/local --with-mysql-config=/usr/local/bin/mysql_config
+  347  rake bootstrap
+  348  gem install passenger
+  349  sudo gem install passenger
+  350  passenger start
+  351  git checkout hwf_iap_changes
+  352  passenger start
+  353  rake db:migrate
+  354  passenger start
+  355  script/console
+  356  passenger start
+  357  history
+
+
+
+
