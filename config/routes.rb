@@ -7,6 +7,10 @@ GameServer::Application.routes.draw do
   get "users/show"
   get "users/new"
   get "users/create"
+  
+  get "users/games"
+  get "users/moves"
+  get "users/chats"
   #get "users/list"
 
   # The priority is based upon order of creation:
