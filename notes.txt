@@ -20,14 +20,25 @@ heroku open
 
 ----------------------------------------------------
 
-http://floating-sunset-9026.herokuapp.com/sessions/create.json?email=test1@test.com&password=password1
-http://floating-sunset-9026.herokuapp.com/users/show.json?id=3
+http://0.0.0.0:3000
+http://floating-sunset-9026.herokuapp.com
 
-/users/create.json?name=Kevin&email=tokevinharris@gmail.com&password=testtest&password_confirmation=testtest
+/users/create.json?name=Kevin&email=tokevinharris@gmail.com&password=testTest&password_confirmation=testTest
 
-http://0.0.0.0:3000/users/create.json?name=Kevin&email=tokevinharris@gmail.com&password=testtest&password_confirmation=testtest
-http://0.0.0.0:3000/sessions/create.json?email=tokevinharris@gmail.com&password=testtest
-http://0.0.0.0:3000/users/show.json?id=24
+/sessions/create.json?email=test1@test.com&password=password1
+/sessions/destroy.json
+
+/chats/create.json?game_id=2&message=My Message
+/chats/show.json?id=29
+
+/moves/create.json?game_id=2&data=JSON data
+/moves/show?id=23
+
+/users/show.json?id=3
+
+
+
+
 
 ----------------------------------------------------
 
@@ -41,6 +52,9 @@ rails generate model Chat user_id:integer game_id:integer message:text
 rails generate model Move user_id:integer game_id:integer data:text
 
 rails generate controller Sessions new
+
+rails generate controller Moves create show
+rails generate controller Chats create show
 
 ----------------------------------------------------
 

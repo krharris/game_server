@@ -2,8 +2,8 @@ class SessionsController < ApplicationController
   
   respond_to :json
   
-  def new
-  end
+  # def new
+  # end
 
   # Create a user session so the user's client only has to sign in once.
   def create
