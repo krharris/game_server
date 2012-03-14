@@ -10,6 +10,17 @@ class ChatsController < ApplicationController
     chat = Chat.create(:user_id => current_user.id, :game_id => params[:game_id], :message => params[:message])
 
     if chat.valid?
+      
+       game = Game.find_by_id( chat.game_id )
+
+       if game.nil?
+          flash.now[:error] = "Game associated with Chat doesn't exist."
+          respond_with( flash )
+       else
+          game.num_chats += 1
+          game.save()
+       end
+
        response = { :user_id => chat.user_id, :game_id => chat.game_id, :message => chat.message }
        respond_with(response)
     else

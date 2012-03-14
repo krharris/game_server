@@ -13,6 +13,9 @@ GameServer::Application.routes.draw do
   get "users/chats"
   #get "users/list"
   
+  get "games/create"
+  get "games/show"
+  
   get "moves/create"
   get "moves/show"
   

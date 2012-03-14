@@ -55,7 +55,7 @@ rails generate controller Sessions new
 
 rails generate controller Moves create show
 rails generate controller Chats create show
-
+rails generate controller Games create show
 ----------------------------------------------------
 
 belongs_to :user

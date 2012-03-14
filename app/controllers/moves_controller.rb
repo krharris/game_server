@@ -10,6 +10,17 @@ class MovesController < ApplicationController
       move = Move.create(:user_id => current_user.id, :game_id => params[:game_id], :data => params[:data])
 
       if move.valid?
+
+         game = Game.find_by_id( move.game_id )
+
+         if game.nil?
+            flash.now[:error] = "Game associated with Move doesn't exist."
+            respond_with( flash )
+         else
+            game.num_moves += 1
+            game.save()
+         end
+
          response = { :user_id => move.user_id, :game_id => move.game_id, :data => move.data }
          respond_with(response)
       else

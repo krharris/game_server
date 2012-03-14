@@ -46,7 +46,7 @@ class UsersController < ApplicationController
     games = Game.find( :all, :conditions => ["user_id_1=? or user_id_2=?", params[:id], params[:id]] )
 
     response = Array.new( games.length, 0 )
-    
+
     games.each_with_index do |a, index|
       
       response[index] = Hash.new
