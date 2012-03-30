@@ -7,6 +7,7 @@ GameServer::Application.routes.draw do
   get "users/show"
   #get "users/new"
   get "users/create"
+  get "users/usersPlayed"
   
   get "users/games"
   get "users/moves"
