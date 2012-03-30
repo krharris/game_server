@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120211041720) do
+ActiveRecord::Schema.define(:version => 20120330020359) do
 
   create_table "chats", :force => true do |t|
     t.integer  "user_id"
@@ -56,5 +56,6 @@ ActiveRecord::Schema.define(:version => 20120211041720) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["name"], :name => "index_users_on_name", :unique => true
 
 end

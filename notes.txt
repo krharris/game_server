@@ -42,6 +42,8 @@ http://floating-sunset-9026.herokuapp.com
 
 ----------------------------------------------------
 
+ rails generate migration add_name_uniqueness_index
+
 rails generate migration add_email_uniqueness_index
 rails generate migration add_password_to_users encrypted_password:string
 rails generate migration add_salt_to_users salt:string
