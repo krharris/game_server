@@ -7,8 +7,8 @@ namespace :bootstrap do
 
     puts("Adding test users...")
  
-    user1 = User.create( :name => 'Mr. Test1', :email => 'test1@test.com', :password => "password1", :password_confirmation => "password1" )
-    user2 = User.create( :name => 'Mr. Test2', :email => 'test2@test.com', :password => "password2", :password_confirmation => "password2" )
+    user1 = User.create( :name => 'Test1', :email => 'test1@test.com', :password => "password1", :password_confirmation => "password1" )
+    user2 = User.create( :name => 'Test2', :email => 'test2@test.com', :password => "password2", :password_confirmation => "password2" )
 
     puts("Adding test games...")
 
