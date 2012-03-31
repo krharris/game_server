@@ -11,7 +11,7 @@ y User.all ; y Game.all ; y Move.all ; y Chat.all
 
 git push heroku master
 heroku ps
-heroku logs
+heroku logs --tail
 heroku open
 heroku run console
 heroku run rake db:migrate

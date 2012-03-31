@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   
   # User must be logged in and have an active session to perform these operations.
-  before_filter :authenticate, :only => [:show, :games, :moves, :chats]
+  before_filter :authenticate, :only => [:show, :games, :usersPlayed, :moves, :chats]
 
   respond_to :json
 
